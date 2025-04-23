@@ -3,293 +3,472 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Portfolio</title>
+    <title>CV - Administrateur Systèmes et Infrastructures</title>
     <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #4285f4;
+            --text-color: #202124;
+            --light-gray: #f8f9fa;
+            --medium-gray: #dadce0;
+            --dark-gray: #5f6368;
+            --accent-color: #1967d2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', 'Segoe UI', Helvetica, Arial, sans-serif;
             line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            color: var(--text-color);
+            background-color: var(--light-gray);
+            padding: 0;
+            margin: 0;
         }
         
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            border-radius: 8px;
+            overflow: hidden;
         }
         
-        h1 {
-            color: #2c3e50;
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px;
+            position: relative;
         }
         
-        .profile {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .profile img {
-            border-radius: 50%;
-            max-width: 150px;
+        .header h1 {
+            font-size: 36px;
+            font-weight: 700;
             margin-bottom: 10px;
         }
         
-        .projects {
-            margin-bottom: 40px;
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
         }
         
-        .project-card {
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
+        .header .experience {
+            position: absolute;
+            right: 40px;
+            top: 40px;
+            background-color: white;
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
-        .project-card h3 {
-            margin-top: 0;
-            color: #3498db;
+        .content {
+            padding: 40px;
         }
         
-        .versioning ul, .versioning ol {
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--primary-color);
             margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--medium-gray);
+            position: relative;
         }
         
-        .versioning h3 {
-            margin-top: 25px;
-            margin-bottom: 10px;
-            color: #2c3e50;
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background-color: var(--primary-color);
         }
         
-        code {
-            background-color: #f0f0f0;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: monospace;
-            font-size: 0.9em;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: #7f8c8d;
-            font-size: 0.9em;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .social-links a {
-            color: #3498db;
-            text-decoration: none;
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Portfolio</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
+        .highlight {
+            background-color: #e8f0fe;
+            border-left: 4px solid var(--primary-color);
             padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-        }
-        
-        h1 {
-            color: #2c3e50;
-        }
-        
-        .profile {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .profile img {
-            border-radius: 50%;
-            max-width: 150px;
-            margin-bottom: 10px;
-        }
-        
-        .projects {
-            margin-bottom: 40px;
-        }
-        
-        .project-card {
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .project-card h3 {
-            margin-top: 0;
-            color: #3498db;
-        }
-        
-        .versioning ul, .versioning ol {
-            margin-bottom: 20px;
-        }
-        
-        .versioning h3 {
-            margin-top: 25px;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        
-        code {
-            background-color: #f0f0f0;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: monospace;
-            font-size: 0.9em;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: #7f8c8d;
-            font-size: 0.9em;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
             margin: 20px 0;
+            border-radius: 0 4px 4px 0;
         }
         
-        .social-links a {
-            color: #3498db;
-            text-decoration: none;
+        .highlight p {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            list-style-type: none;
+        }
+        
+        ul li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 24px;
+        }
+        
+        ul li::before {
+            content: "•";
+            color: var(--primary-color);
             font-weight: bold;
+            font-size: 18px;
+            position: absolute;
+            left: 0;
+            top: 0;
         }
         
-        .social-links a:hover {
-            text-decoration: underline;
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .skill-category {
+            background-color: white;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--medium-gray);
+        }
+        
+        .skill-category-title {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            font-weight: 600;
+        }
+        
+        .skill-category-content {
+            padding: 15px;
+        }
+        
+        .experience-item {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .experience-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .experience-header {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .experience-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .experience-company {
+            font-weight: 600;
+        }
+        
+        .experience-period {
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+        
+        .tech-env {
+            background-color: var(--light-gray);
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+        
+        .tech-env strong {
+            color: var(--accent-color);
+        }
+        
+        .modern-workplace-skill {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        .two-columns {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+            }
+            
+            .header {
+                padding: 30px;
+                text-align: center;
+            }
+            
+            .header .experience {
+                position: static;
+                display: inline-block;
+                margin-top: 20px;
+            }
+            
+            .content {
+                padding: 30px;
+            }
+            
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Bienvenue sur mon Portfolio</h1>
-        <p>Développeur passionné | Créateur de solutions innovantes</p>
-    </header>
-    
-    <section class="profile">
-        <img src="/api/placeholder/150/150" alt="Photo de profil">
-        <h2>Votre Nom</h2>
-        <p>Développeur Web Full Stack</p>
-    </section>
-    
-    <section class="projects">
-        <h2>Mes Projets</h2>
-        
-        <div class="project-card">
-            <h3>Projet 1</h3>
-            <p>Une application web utilisant React et Node.js pour résoudre des problèmes du monde réel.</p>
-            <a href="#">Voir le projet</a>
+    <div class="container">
+        <div class="header">
+            <h1>EZA</h1>
+            <p>Administrateur Systèmes et Infrastructures - Expert Windows</p>
+            <div class="experience">+20 ans d'expérience</div>
         </div>
         
-        <div class="project-card">
-            <h3>Projet 2</h3>
-            <p>Une API RESTful développée avec Express et MongoDB pour gérer des données complexes.</p>
-            <a href="#">Voir le projet</a>
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">Profil</h2>
+                <p>Administrateur système et réseau chevronné avec plus de <strong>20 ans d'expérience</strong> dans des environnements techniques variés et complexes. Mon parcours démontre une capacité exceptionnelle à m'adapter rapidement à différents contextes technologiques et sectoriels (administration publique, juridique, e-commerce, environnement). J'ai développé une approche polyvalente me permettant d'appréhender aussi bien les aspects techniques que stratégiques des projets informatiques.</p>
+                
+                <div class="highlight">
+                    <p>Profil adapté à la mission Modern Workplace :</p>
+                    <ul>
+                        <li><span class="modern-workplace-skill">Déploiement Windows 10/11</span> avec SCCM et Intune - expérience éprouvée sur des parcs de plus de 1200 postes</li>
+                        <li><span class="modern-workplace-skill">Migration M365</span> (tenant à tenant) et maîtrise approfondie de l'environnement Microsoft</li>
+                        <li><span class="modern-workplace-skill">Gestion des OU et provisioning</span> dans Active Directory - conception et restructuration d'architectures AD complexes</li>
+                        <li><span class="modern-workplace-skill">Configuration</span> des solutions de salles de réunion, mobilité et impression - intégration complète dans l'écosystème</li>
+                        <li><span class="modern-workplace-skill">Pilotage opérationnel</span> d'équipes techniques multidisciplinaires dans des contextes internationaux</li>
+                        <li><span class="modern-workplace-skill">Planification</span> et suivi de projets complexes - capacité à gérer simultanément plusieurs streams techniques</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Technologies</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <div class="skill-category-title">Infrastructure</div>
+                        <div class="skill-category-content">
+                            <span class="modern-workplace-skill">Windows Server, Active Directory, SCCM</span>, VMware, Hyper-V, <span class="modern-workplace-skill">Office 365</span>, RG Supervision, NAS, SAN, WSUS
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-category-title">Systèmes & Serveurs</div>
+                        <div class="skill-category-content">
+                            <span class="modern-workplace-skill">Windows Server (2008-2022), Windows 10/11</span>, Linux (Ubuntu, CentOS, Debian), <span class="modern-workplace-skill">Active Directory, Group Policy, DNS, DHCP</span>, Print Services, File Services, IIS
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-category-title">Messagerie & Collaboration</div>
+                        <div class="skill-category-content">
+                            <span class="modern-workplace-skill">Microsoft Office 365, Teams, SharePoint, Exchange</span>, Zimbra
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-category-title">Sécurité</div>
+                        <div class="skill-category-content">
+                            <span class="modern-workplace-skill">Microsoft Defender</span>, BitDefender, Veeam, Sophos, Trend Micro, Symantec, Kaspersky, Firewalls (WatchGuard, Juniper, Cisco, SonicWall, PFSense)
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-category-title">Virtualisation</div>
+                        <div class="skill-category-content">
+                            Hyper-V, VMware ESXI, VSphere, VxRail
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-category-title">Scripting & Cloud</div>
+                        <div class="skill-category-content">
+                            <span class="modern-workplace-skill">PowerShell</span>, Bash, GIT, Docker, Azure, AWS, OVHcloud
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-category-title">Gestion de Projet</div>
+                        <div class="skill-category-content">
+                            <span class="modern-workplace-skill">Méthodologie Agile, Waterfall, SCRUM, MS Project</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Expériences Professionnelles</h2>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-company">Conseil d'État - Direction des Services Informatiques</div>
+                            <div class="experience-title">Administrateur SYSTÈMES & INFRASTRUCTURE</div>
+                        </div>
+                        <div class="experience-period">Mars 2024 - Présent</div>
+                    </div>
+                    
+                    <ul>
+                        <li>Administration d'une infrastructure virtualisée critique de +1500 VMs réparties sur 3 datacenters, démontrant ma capacité à gérer des environnements complexes à grande échelle</li>
+                        <li><span class="modern-workplace-skill">Développement de scripts PowerShell avancés pour l'automatisation</span> des tâches administratives, réduisant significativement le temps d'intervention et les erreurs humaines</li>
+                        <li>Optimisation proactive des performances via l'analyse approfondie des métriques vSphere et mise en place de tableaux de bord personnalisés</li>
+                        <li>Gestion rigoureuse des interventions hardware et implémentation d'un programme de maintenance préventive assurant une haute disponibilité</li>
+                        <li>Résolution efficace d'incidents complexes avec un temps moyen de résolution minimisé, garantissant la continuité des services critiques</li>
+                    </ul>
+                    
+                    <div class="tech-env">
+                        Environnement : Infrastructure VxRail, VMware vSphere 8.x, <strong>Windows Server 2016/2019/2022</strong>, Centreon, Grafana, <strong>PowerShell</strong>, Veeam
+                    </div>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-company">Wissal Group</div>
+                            <div class="experience-title">TeamLead/Tech Lead Administration Systèmes & Réseaux / WorkPlace</div>
+                        </div>
+                        <div class="experience-period">Mars 2023 - Février 2024</div>
+                    </div>
+                    
+                    <ul>
+                        <li><span class="modern-workplace-skill">Gestion et coordination des environnements de déploiement</span> en collaboration avec une équipe multidisciplinaire (chef de projet, experts DevOps, consultants DBA, développeurs), démontrant ma capacité à travailler en équipe et à m'adapter à différentes spécialités techniques</li>
+                        <li><span class="modern-workplace-skill">Rédaction exhaustive de documentation technique</span> et de rapports de suivi permettant une meilleure compréhension des systèmes et facilitant les interventions</li>
+                        <li>Migration complexe d'environnements cloud disparates (Amazon EC2, OVH VPS) vers une infrastructure centralisée, illustrant ma capacité à concevoir et exécuter des transformations d'infrastructure majeures</li>
+                        <li>Implémentation innovante d'Apache Guacamole pour sécuriser la gestion des accès aux serveurs, témoignant de ma vigilance en matière de sécurité</li>
+                        <li>Déploiement stratégique d'outils de supervision (Grafana, Prometheus) avec création de tableaux de bord personnalisés pour un monitoring proactif</li>
+                    </ul>
+                    
+                    <div class="tech-env">
+                        Environnement : <strong>Windows Server, O365, SCCM</strong>, Hyper-V, VMware, Watch Guard, AWS, Proxmox
+                    </div>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-company">Groupe SEPTEO - Genapi</div>
+                            <div class="experience-title">Tech Lead / Référent technique Équipes RUN & CTC</div>
+                        </div>
+                        <div class="experience-period">Mars 2021 - Mars 2023</div>
+                    </div>
+                    
+                    <ul>
+                        <li><span class="modern-workplace-skill">Direction et encadrement efficace d'une équipe de 10 administrateurs système et 4 techniciens</span>, démontrant mes compétences en leadership et en gestion d'équipe technique</li>
+                        <li><span class="modern-workplace-skill">Configuration avancée de SCCM pour le déploiement centralisé</span> des postes de travail avec création d'images personnalisées selon les besoins métiers spécifiques des études notariales</li>
+                        <li><span class="modern-workplace-skill">Administration experte et migration des plateformes Exchange et O365</span>, incluant la gestion des politiques de sécurité et de conformité exigées par le CSN</li>
+                        <li>Conduite d'audits de sécurité approfondis sur plus de 150 clients, identifiant et remédiant à des vulnérabilités critiques, témoignant de ma rigueur et de ma capacité d'analyse</li>
+                        <li>Élaboration de procédures méthodiques pour standardiser les interventions techniques, améliorant l'efficacité opérationnelle et la qualité de service</li>
+                    </ul>
+                    
+                    <div class="tech-env">
+                        Environnement : <strong>Windows Server, Active Directory, MS Exchange, O365, SCCM</strong>, Hyper-V, VMware, BitDefender
+                    </div>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-company">KAM Company GMBH</div>
+                            <div class="experience-title">Ingénieur Poste de Travail / Administrateur Système</div>
+                        </div>
+                        <div class="experience-period">Janvier 2019 - Mars 2021</div>
+                    </div>
+                    
+                    <ul>
+                        <li><span class="modern-workplace-skill">Conception et mise en œuvre d'une stratégie complète de déploiement</span> du parc informatique pour 120+ utilisateurs sur 3 sites, illustrant ma vision globale et ma capacité de planification</li>
+                        <li><span class="modern-workplace-skill">Élaboration et implémentation de politiques de maintenance</span> préventive et curative réduisant significativement les incidents critiques et les temps d'arrêt</li>
+                        <li>Mise en place d'un environnement technique avancé dédié à l'IA basé sur un serveur NVIDIA DGX100, témoignant de ma capacité à appréhender et intégrer des technologies de pointe</li>
+                        <li>Conception d'une architecture de sécurité multi-niveaux avec segmentation réseau et contrôle d'accès granulaire, démontrant mon expertise en sécurisation d'infrastructures</li>
+                        <li>Développement d'un système complet de documentation technique avec plus de 200 procédures détaillées, facilitant le transfert de connaissances et l'autonomie des utilisateurs</li>
+                    </ul>
+                    
+                    <div class="tech-env">
+                        Environnement : <strong>MS Project, Windows Server, Active Directory</strong>, Linux, VMware, ESXI, pfSense, Grafana
+                    </div>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-company">Office National de l'Assainissement</div>
+                            <div class="experience-title">Administrateur réseau et système / WorkPlace</div>
+                        </div>
+                        <div class="experience-period">Mars 2001 - Juillet 2018</div>
+                    </div>
+                    
+                    <ul>
+                        <li><span class="modern-workplace-skill">Conception et mise en œuvre d'une forêt Active Directory complexe</span> structurée pour 194 sites géographiques, démontrant ma capacité à gérer des projets d'infrastructure à l'échelle nationale</li>
+                        <li><span class="modern-workplace-skill">Pilotage et exécution de la migration de plus de 1200 postes de travail vers Windows 10 avec SCCM</span>, illustrant mon expertise dans la gestion de grands projets de déploiement</li>
+                        <li><span class="modern-workplace-skill">Optimisation des structures d'OU et implémentation de politiques de groupe (GPO)</span> adaptées aux spécificités organisationnelles et aux contraintes de sécurité</li>
+                        <li>Migration progressive des infrastructures serveur de Windows NT jusqu'à Windows Server 2016, témoignant de ma capacité à gérer l'évolution technologique sur le long terme</li>
+                        <li>Conception et déploiement d'une architecture réseau nationale utilisant des technologies hétérogènes (ADSL, IPMPLS, Frame Relay, 3G) adaptées aux contraintes locales, prouvant ma flexibilité technique et ma capacité d'adaptation</li>
+                    </ul>
+                    
+                    <div class="tech-env">
+                        Environnement : <strong>Windows Server (2003-2016), Active Directory, SCCM, GPO</strong>, Messagerie (Lotus Domino, Zimbra), Firewalls (Juniper, Cisco PIX), Antivirus (Symantec Endpoint Protection, Kaspersky)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="two-columns">
+                <div class="section">
+                    <h2 class="section-title">Formations & Certifications</h2>
+                    <ul>
+                        <li><strong>2013 :</strong> KASPERSKY ENDPOINT SECURITY AND MANAGEMENT FUNDAMENTALS</li>
+                        <li><strong>2012 :</strong> INSTALLATION ET MISE EN ŒUVRE D'UN GROUPWARE ZIMBRA</li>
+                        <li><strong>2010 :</strong> SYMANTEC ENDPOINT PROTECTION 11</li>
+                        <li><strong>2007 :</strong> IMPLÉMENTATION ET ADMINISTRATION D'UNE INFRASTRUCTURE WINDOWS</li>
+                        <li><strong>2000 :</strong> Ingénieur en télécommunication et Informatique</li>
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Langues</h2>
+                    <ul>
+                        <li><strong>Anglais :</strong> Professionnel</li>
+                        <li><strong>Italien :</strong> Professionnel</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p>Points forts pour la mission Modern Workplace :</p>
+                <ul>
+                    <li><strong>Expertise technique éprouvée</strong> : Mon parcours couvre l'ensemble des technologies requises (Windows 10/11, SCCM, Intune, Defender, M365, Active Directory) avec une expérience concrète sur des projets de taille comparable</li>
+                    <li><strong>Polyvalence exceptionnelle</strong> : J'ai travaillé dans des environnements techniques et sectoriels très divers (juridique, e-commerce, administration publique, environnement), démontrant ma capacité à m'adapter rapidement à de nouveaux contextes</li>
+                    <li><strong>Vision globale et stratégique</strong> : Ma longue expérience m'a permis de développer une compréhension holistique des infrastructures IT, permettant d'anticiper les impacts transverses et de minimiser les risques lors des déploiements</li>
+                    <li><strong>Leadership technique confirmé</strong> : J'ai dirigé avec succès des équipes techniques multidisciplinaires, développant une méthodologie efficace de pilotage opérationnel directement applicable au projet</li>
+                    <li><strong>Gestion de projets internationaux</strong> : Mon expérience avec des infrastructures multi-sites représente un atout majeur pour le déploiement du poste de travail en France et à l'international</li>
+                    <li><strong>Culture de la documentation</strong> : J'accorde une importance particulière à la production de livrables de qualité (Kick-Off, suivi hebdo, plans de migration), essentiels à la réussite et à la pérennité du projet</li>
+                </ul>
+            </div>
         </div>
-        
-        <div class="project-card">
-            <h3>Projet 3</h3>
-            <p>Une interface utilisateur responsive et moderne construite avec HTML5, CSS3 et JavaScript.</p>
-            <a href="#">Voir le projet</a>
-        </div>
-    </section>
-    
-    <section class="skills">
-        <h2>Compétences</h2>
-        <p>
-            JavaScript, HTML5, CSS3, React, Node.js, Express, MongoDB, Git, Python, 
-            Docker, AWS, Responsive Design, UI/UX Design
-        </p>
-    </section>
-    
-    <section class="about">
-        <h2>À Propos</h2>
-        <p>
-            Développeur passionné avec X années d'expérience dans la création d'applications web 
-            modernes et efficaces. Toujours à la recherche de nouveaux défis et de nouvelles 
-            technologies à maîtriser. Partisan de l'open source et contributeur actif à la 
-            communauté de développeurs.
-        </p>
-    </section>
-    
-    <section class="versioning">
-        <h2>Stratégie de Versionnage</h2>
-        <p>Ce dépôt suit les principes du <strong>Semantic Versioning (SemVer)</strong> pour une gestion claire des versions:</p>
-        <ul style="list-style-type: none; padding-left: 20px;">
-            <li>🔄 <strong>Format:</strong> MAJEUR.MINEUR.CORRECTIF (exemple: 1.2.3)</li>
-            <li>🚀 <strong>MAJEUR:</strong> Changements incompatibles avec les versions précédentes</li>
-            <li>✨ <strong>MINEUR:</strong> Ajout de fonctionnalités rétrocompatibles</li>
-            <li>🐛 <strong>CORRECTIF:</strong> Corrections de bugs rétrocompatibles</li>
-        </ul>
-        
-        <h3>Branches</h3>
-        <ul style="list-style-type: none; padding-left: 20px;">
-            <li>🌿 <strong>main:</strong> Code stable et déployable en production</li>
-            <li>🌱 <strong>develop:</strong> Intégration continue des nouvelles fonctionnalités</li>
-            <li>🌼 <strong>feature/*:</strong> Développement de nouvelles fonctionnalités</li>
-            <li>🚑 <strong>hotfix/*:</strong> Corrections urgentes pour la production</li>
-        </ul>
-        
-        <h3>Workflow de Contribution</h3>
-        <ol style="padding-left: 20px;">
-            <li>Créez une branche à partir de <code>develop</code></li>
-            <li>Développez vos modifications</li>
-            <li>Soumettez une Pull Request vers <code>develop</code></li>
-            <li>Après revue, votre code sera fusionné</li>
-        </ol>
-        
-        <h3>Conventions de Commit</h3>
-        <p>Les messages de commit suivent le format <code>type(portée): message</code></p>
-        <ul style="list-style-type: none; padding-left: 20px;">
-            <li>✨ <code>feat:</code> Nouvelle fonctionnalité</li>
-            <li>🐛 <code>fix:</code> Correction de bug</li>
-            <li>📚 <code>docs:</code> Documentation</li>
-            <li>💎 <code>style:</code> Formatage, sans changement de code</li>
-            <li>♻️ <code>refactor:</code> Refactorisation du code</li>
-            <li>⚡️ <code>perf:</code> Amélioration des performances</li>
-            <li>🧪 <code>test:</code> Ajout ou modification de tests</li>
-        </ul>
-    </section>
-    
-    <div class="social-links">
-        <a href="https://github.com/votre-username">GitHub</a>
-        <a href="https://linkedin.com/in/votre-profile">LinkedIn</a>
-        <a href="https://twitter.com/votre-handle">Twitter</a>
     </div>
-    
-    <footer>
-        <p>&copy; 2025 Votre Nom - Tous droits réservés</p>
-        <p>Cette page est hébergée sur GitHub Pages</p>
-    </footer>
 </body>
 </html>
