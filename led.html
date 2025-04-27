@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Démoller de texte LED</title>
+  <style>
+    :root {
+      --primary-color: #00a19a;
+      --background-color: #222222;
+      --text-color: #d32f2f;
+      --bg-color: #ffeb3b;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    
+    body {
+      background: var(--background-color);
+      color: #fff;
+    }
+    
+    .header {
+      background: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .text-size-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .content {
+      padding: 20px;
+    }
+    
+    .section-title {
+      color: #aaa;
+      font-size: 24px;
+      margin: 15px 0;
+      font-weight: normal;
+    }
+    
+    #previewContainer {
+      width: 100%;
+      height: 260px;
+      border: 1px solid #444;
+      margin: 10px 0 25px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 3px;
+      background: var(--bg-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .preview-text {
+      position: absolute;
+      white-space: nowrap;
+      font-weight: bold;
+      font-size: 120px;
+      color: var(--text-color);
+      animation: scroll 10s linear infinite;
+      will-change: transform;
+      text-shadow: 0 0 2px rgba(0,0,0,0.3);
+    }
+    
+    /* Effet de texture LED (points lumineux) */
+    .led-pixels {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 5;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 30%, transparent 70%);
+      background-size: 5px 5px;
+      mix-blend-mode: overlay;
+      opacity: 1;
+    }
+    
+    /* Styles pour les cadres LED */
+    .led-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 10;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0, 0, 0, 0.1) 4px, rgba(0, 0, 0, 0.1) 5px),
+                        repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0, 0, 0, 0.1) 4px, rgba(0, 0, 0, 0.1) 5px);
+      opacity: 0.8;
+    }
+    
+    @keyframes scroll {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    
+    .text-input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 50px;
+      border: none;
+      background: #333;
+      color: white;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .speed-section {
+      margin-bottom: 20px;
+    }
+    
+    .speed-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    
+    .speed-btn {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 1px solid #555;
+      background: #333;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    
+    .speed-btn.active {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    
+    .colors-section {
+      margin-bottom: 30px;
+    }
+    
+    .color-options {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    
+    .color-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    
+    .color-text {
+      background: #d32f2f;
+    }
+    
+    .color-bg {
+      background: #ffeb3b;
+    }
+    
+    .action-button {
+      width: 100%;
+      padding: 15px;
+      border-radius: 5px;
+      border: none;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      cursor: pointer;
+    }
+    
+    .start-btn {
+      background: var(--primary-color);
+      color: white;
+    }
+    
+    .share-btn {
+      background: #555;
+      color: white;
+    }
+    
+    .additional-options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .option-btn {
+      flex: 1;
+      padding: 10px;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    .option-btn.active {
+      background: var(--primary-color);
+    }
+    
+    /* Mode plein écran */
+    .fullscreen-mode {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: black;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; /* Centrer horizontalement */
+    }
+    
+    .fullscreen-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center; /* Centrer horizontalement */
+      align-items: center; /* Centrer verticalement */
+      overflow: hidden;
+    }
+    
+    .fullscreen-mode .preview-text {
+      font-size: 25vh; /* Dynamique en fonction de la hauteur de l'écran */
+      text-align: center; /* Centrer le texte */
+      width: 100%;
+      line-height: 1; /* Réduire l'espace entre les lignes */
+      position: absolute;
+      /*
+       * Nous allons garder l'animation, mais nous allons centrer
+       * le contenu au milieu de l'écran pour commencer
+       * puis l'animer depuis la droite vers la gauche
+       */
+    }
+    
+    @keyframes scroll-center {
+      0% { transform: translateX(100vw); }
+      100% { transform: translateX(-100vw); }
+    }
+    
+    .fullscreen-mode .led-pixels {
+      background-size: 10px 10px;
+    }
+    
+    .fullscreen-mode .led-grid {
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 10px, rgba(0, 0, 0, 0.15) 10px, rgba(0, 0, 0, 0.15) 12px),
+                        repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(0, 0, 0, 0.15) 10px, rgba(0, 0, 0, 0.15) 12px);
+    }
+    
+    .fullscreen-controls {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      z-index: 1001;
+    }
+    
+    .fullscreen-btn {
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+    }
+    
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 40px;
+      background: #000;
+    }
+    
+    .footer button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    Démoller de texte LED
+    <button class="text-size-btn" id="textSizeBtn">AA</button>
+  </div>
+  
+  <div class="content">
+    <div class="section-title">Aperçu:</div>
+    <div id="previewContainer">
+      <div class="preview-text" id="previewText">are beautiful</div>
+      <div class="led-pixels"></div>
+      <div class="led-grid"></div>
+    </div>
+    
+    <div class="section-title">Texte:</div>
+    <input type="text" class="text-input" id="textInput" value="You are beautiful 💋 ... even more when you smile ❤️">
+    
+    <div class="section-title">Vitesse:</div>
+    <div class="speed-section">
+      <div class="speed-buttons">
+        <button class="speed-btn">1</button>
+        <button class="speed-btn">2</button>
+        <button class="speed-btn">3</button>
+        <button class="speed-btn">4</button>
+        <button class="speed-btn active">5</button>
+        <button class="speed-btn">6</button>
+        <button class="speed-btn">7</button>
+        <button class="speed-btn">8</button>
+        <button class="speed-btn">9</button>
+        <button class="speed-btn">10</button>
+      </div>
+    </div>
+    
+    <div class="section-title">Couleurs:</div>
+    <div class="colors-section">
+      <div class="color-options">
+        <button class="color-btn color-text" id="textColorBtn"></button>
+        <button class="color-btn color-bg" id="bgColorBtn"></button>
+      </div>
+    </div>
+    
+    <!-- Options supplémentaires -->
+    <div class="additional-options">
+      <button class="option-btn" id="capsBtn">MAJUSCULES</button>
+      <button class="option-btn" id="fullscreenBtn">PLEIN ÉCRAN</button>
+    </div>
+    
+    <button class="action-button start-btn" id="startBtn">DÉMARRER</button>
+    <button class="action-button share-btn" id="shareBtn">PARTAGER</button>
+  </div>
+  
+  <div class="footer">
+    <button id="menuBtn">☰</button>
+    <button id="homeBtn">◯</button>
+    <button id="backBtn">◁</button>
+  </div>
+
+  <script>
+    // Sélection des éléments
+    const textInput = document.getElementById('textInput');
+    const previewText = document.getElementById('previewText');
+    const speedButtons = document.querySelectorAll('.speed-btn');
+    const textColorBtn = document.getElementById('textColorBtn');
+    const bgColorBtn = document.getElementById('bgColorBtn');
+    const previewContainer = document.getElementById('previewContainer');
+    const startBtn = document.getElementById('startBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const capsBtn = document.getElementById('capsBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const textSizeBtn = document.getElementById('textSizeBtn');
+    
+    // Variables d'état
+    let currentSpeed = 5;
+    let textColor = '#d32f2f';
+    let bgColor = '#ffeb3b';
+    let isPlaying = false;
+    let isUpperCase = false;
+    let isFullscreen = false;
+    let textSize = 'normal'; // normal, large, xlarge
+    
+    // Mise à jour du texte
+    textInput.addEventListener('input', function() {
+      updatePreviewText();
+    });
+    
+    function updatePreviewText() {
+      let text = textInput.value;
+      
+      if (isUpperCase) {
+        text = text.toUpperCase();
+      }
+      
+      // Extraction d'une partie visible pour l'aperçu
+      let visibleText = text;
+      if (text.length > 15) {
+        visibleText = text.substring(0, 15);
+      }
+      
+      previewText.textContent = visibleText;
+      updateScrollSpeed();
+      
+      // Ajuster la taille du texte pour remplir la zone
+      adjustTextSize();
+    }
+    
+    // Ajuster la taille du texte pour qu'il remplisse mieux la zone
+    function adjustTextSize() {
+      const containerHeight = previewContainer.clientHeight;
+      const containerWidth = previewContainer.clientWidth;
+      
+      // Obtenir le texte actuel
+      const currentText = previewText.textContent;
+      
+      // Commencer avec une grande taille et réduire jusqu'à ce que ça rentre bien
+      let fontSize = Math.floor(containerHeight * 0.9); // Utiliser 90% de la hauteur comme point de départ
+      previewText.style.fontSize = fontSize + 'px';
+      
+      // Vérifier si le texte remplit correctement la largeur et la hauteur
+      // Pour garantir que le texte ait un impact visuel fort, on veut qu'il prenne au moins 
+      // 80% de la hauteur du conteneur
+      const textHeight = previewText.offsetHeight;
+      const ratio = textHeight / containerHeight;
+      
+      if (ratio < 0.8) {
+        // Le texte est trop petit, augmenter la taille
+        fontSize = Math.floor(fontSize / ratio * 0.8);
+        previewText.style.fontSize = fontSize + 'px';
+      }
+      
+      // Assurer que le texte n'est pas trop grand
+      if (ratio > 0.95) {
+        // Réduire légèrement pour avoir une marge
+        fontSize = Math.floor(fontSize * 0.95 / ratio);
+        previewText.style.fontSize = fontSize + 'px';
+      }
+    }
+    
+    // Mise à jour de la vitesse
+    speedButtons.forEach((btn, index) => {
+      btn.addEventListener('click', function() {
+        // Enlever la classe active de tous les boutons
+        speedButtons.forEach(b => b.classList.remove('active'));
+        // Ajouter la classe active au bouton cliqué
+        this.classList.add('active');
+        // Mettre à jour la vitesse
+        currentSpeed = index + 1;
+        updateScrollSpeed();
+      });
+    });
+    
+    // Simulation des boutons de couleur
+    textColorBtn.addEventListener('click', function() {
+      // Dans une version réelle, cela ouvrirait un sélecteur de couleur
+      const colors = ['#d32f2f', '#E91E63', '#9C27B0', '#3F51B5', '#2196F3', '#009688', '#4CAF50', '#FF9800'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      textColor = randomColor;
+      textColorBtn.style.backgroundColor = randomColor;
+      document.documentElement.style.setProperty('--text-color', randomColor);
+    });
+    
+    bgColorBtn.addEventListener('click', function() {
+      // Dans une version réelle, cela ouvrirait un sélecteur de couleur
+      const colors = ['#ffeb3b', '#FFC107', '#CDDC39', '#8BC34A', '#00BCD4', '#f5f5f5', '#000000', '#795548'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      bgColor = randomColor;
+      bgColorBtn.style.backgroundColor = randomColor;
+      document.documentElement.style.setProperty('--bg-color', randomColor);
+      previewContainer.style.background = randomColor;
+    });
+    
+    // Mise à jour de la vitesse de défilement
+    function updateScrollSpeed() {
+      const textLength = textInput.value.length;
+      const baseSpeed = 20 - currentSpeed; // Inverser l'échelle (1=rapide, 10=lent)
+      const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 50));
+      
+      previewText.style.animation = 'none';
+      void previewText.offsetWidth; // Force reflow
+      previewText.style.animation = `scroll ${duration}s linear infinite`;
+    }
+    
+    // Gestion du bouton démarrer
+    startBtn.addEventListener('click', function() {
+      if (!isPlaying) {
+        startBtn.textContent = 'ARRÊTER';
+        isPlaying = true;
+        toggleFullscreen(true);
+      } else {
+        startBtn.textContent = 'DÉMARRER';
+        isPlaying = false;
+        toggleFullscreen(false);
+      }
+    });
+    
+    // Gestion du bouton partager
+    shareBtn.addEventListener('click', function() {
+      alert('Fonctionnalité de partage simulée');
+    });
+    
+    // Gestion du bouton majuscules
+    capsBtn.addEventListener('click', function() {
+      isUpperCase = !isUpperCase;
+      
+      if (isUpperCase) {
+        capsBtn.classList.add('active');
+      } else {
+        capsBtn.classList.remove('active');
+      }
+      
+      updatePreviewText();
+    });
+    
+    // Gestion du bouton plein écran séparé
+    fullscreenBtn.addEventListener('click', function() {
+      toggleFullscreen(!isFullscreen);
+    });
+    
+    // Fonction pour basculer en mode plein écran
+    function toggleFullscreen(enable) {
+      if (enable && !isFullscreen) {
+        // Créer le conteneur de plein écran
+        const fullscreenContainer = document.createElement('div');
+        fullscreenContainer.id = 'fullscreenContainer';
+        fullscreenContainer.className = 'fullscreen-mode';
+        
+        // Créer le contenu du plein écran
+        const fsContent = document.createElement('div');
+        fsContent.className = 'fullscreen-content';
+        fsContent.style.backgroundColor = bgColor;
+        
+        // Copier le texte défilant (texte complet, pas seulement l'aperçu)
+        const fsText = document.createElement('div');
+        fsText.className = 'preview-text';
+        
+        // Utiliser le texte complet, pas seulement l'aperçu
+        if (isUpperCase) {
+          fsText.textContent = textInput.value.toUpperCase();
+        } else {
+          fsText.textContent = textInput.value;
+        }
+        
+        // Appliquer l'animation centré
+        const textLength = textInput.value.length;
+        const baseSpeed = 20 - currentSpeed;
+        const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 50));
+        
+        // Utiliser une animation différente pour le mode plein écran
+        fsText.style.animation = `scroll-center ${duration}s linear infinite`;
+        fsText.style.color = textColor;
+        
+        // Dynamiquement ajuster la taille du texte en plein écran
+        setTimeout(() => {
+          adjustFullscreenTextSize(fsText);
+        }, 50);
+        
+        // Copier les effets LED
+        const fsPixels = document.createElement('div');
+        fsPixels.className = 'led-pixels';
+        
+        const fsGrid = document.createElement('div');
+        fsGrid.className = 'led-grid';
+        
+        // Créer les contrôles du plein écran
+        const fsControls = document.createElement('div');
+        fsControls.className = 'fullscreen-controls';
+        
+        const exitBtn = document.createElement('button');
+        exitBtn.className = 'fullscreen-btn';
+        exitBtn.textContent = '×';
+        exitBtn.addEventListener('click', function() {
+          toggleFullscreen(false);
+          if (isPlaying) {
+            startBtn.textContent = 'DÉMARRER';
+            isPlaying = false;
+          }
+        });
+        
+        fsControls.appendChild(exitBtn);
+        fsContent.appendChild(fsText);
+        fsContent.appendChild(fsPixels);
+        fsContent.appendChild(fsGrid);
+        fullscreenContainer.appendChild(fsContent);
+        fullscreenContainer.appendChild(fsControls);
+        
+        document.body.appendChild(fullscreenContainer);
+        isFullscreen = true;
+        
+        // Gérer le redimensionnement en plein écran
+        window.addEventListener('resize', function() {
+          if (isFullscreen) {
+            adjustFullscreenTextSize(fsText);
+          }
+        });
+        
+        // Activer le vrai mode plein écran du navigateur si possible
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) {
+          document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          document.documentElement.webkitRequestFullscreen();
+        }
+      } else if (!enable && isFullscreen) {
+        // Quitter le mode plein écran du navigateur
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+        
+        // Supprimer le conteneur de plein écran
+        const fullscreenContainer = document.getElementById('fullscreenContainer');
+        if (fullscreenContainer) {
+          document.body.removeChild(fullscreenContainer);
+        }
+        isFullscreen = false;
+      }
+    }
+    
+    function adjustFullscreenTextSize(textElement) {
+      const windowHeight = window.innerHeight;
+      const windowWidth = window.innerWidth;
+      
+      // En mode plein écran, nous voulons que le texte soit exactement au milieu
+      // et qu'il remplisse bien l'espace vertical
+      
+      // Calculer la taille de police optimale pour remplir l'écran
+      // Nous utilisons une taille relative à la hauteur pour assurer
+      // que le texte est bien visible
+      const isLandscape = windowWidth > windowHeight;
+      
+      if (isLandscape) {
+        // En mode paysage, on utilise une taille basée sur la hauteur
+        // mais plus grande pour remplir l'espace
+        textElement.style.fontSize = Math.floor(windowHeight * 0.5) + 'px';
+      } else {
+        // En mode portrait, on garde le texte plus grand
+        textElement.style.fontSize = Math.floor(windowHeight * 0.3) + 'px';
+      }
+      
+      // S'assurer que le texte est bien centré
+      // même pendant l'animation
+      textElement.style.left = '50%';
+      textElement.style.transform = 'translateX(-50%)';
+    }
+    
+    // Gestion du bouton de taille de texte
+    textSizeBtn.addEventListener('click', function() {
+      // Faire défiler entre les tailles
+      if (textSize === 'normal') {
+        textSize = 'large';
+        previewText.style.fontSize = '140px';
+      } else if (textSize === 'large') {
+        textSize = 'xlarge';
+        previewText.style.fontSize = '160px';
+      } else {
+        textSize = 'normal';
+        adjustTextSize(); // Revenir à la taille optimale calculée
+      }
+    });
+    
+    // Écouter les changements de taille de la fenêtre
+    window.addEventListener('resize', function() {
+      if (textSize === 'normal') {
+        adjustTextSize();
+      }
+      updateScrollSpeed();
+    });
+    
+    // Initialisation
+    window.addEventListener('load', function() {
+      // Mise à jour initiale du texte de prévisualisation
+      updatePreviewText();
+      
+      // Ajuster la taille du texte pour remplir la zone
+      adjustTextSize();
+      
+      // Afficher seulement une petite partie du texte dans l'aperçu
+      const text = textInput.value;
+      let visibleText = text;
+      if (text.length > 15) {
+        visibleText = text.substring(0, 15);
+      }
+      previewText.textContent = visibleText;
+    });
+    
+    // S'assurer que le texte est toujours correctement dimensionné
+    window.addEventListener('resize', function() {
+      if (!isFullscreen) {
+        if (textSize === 'normal') {
+          adjustTextSize();
+        }
+        updateScrollSpeed();
+      }
+    });
+    
+    // Faire la première initialisation immédiatement
+    updatePreviewText();
+    adjustTextSize();
+  </script>
+</body>
+</html>
