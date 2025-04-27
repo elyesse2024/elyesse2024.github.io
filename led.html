@@ -478,7 +478,7 @@
     // Mise à jour de la vitesse de défilement
     function updateScrollSpeed() {
       const textLength = textInput.value.length;
-      const baseSpeed = 20 - currentSpeed; // Inverser l'échelle (1=rapide, 10=lent)
+      const baseSpeed = 10 - currentSpeed; // Inverser l'échelle (1=rapide, 10=lent)
       const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 20));
       
       previewText.style.animation = 'none';
@@ -549,7 +549,7 @@
         
         // Appliquer l'animation centrée
         const textLength = fullText.length;
-        const baseSpeed = 20 - currentSpeed;
+        const baseSpeed = 5 - currentSpeed;
         const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 20));
         
         // Utiliser une animation différente pour le mode plein écran
