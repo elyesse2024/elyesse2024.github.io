@@ -479,7 +479,7 @@
     function updateScrollSpeed() {
       const textLength = textInput.value.length;
       const baseSpeed = 10 - currentSpeed; // Inverser l'échelle (1=rapide, 10=lent)
-      const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 20));
+      const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 10));
       
       previewText.style.animation = 'none';
       void previewText.offsetWidth; // Force reflow
@@ -549,8 +549,8 @@
         
         // Appliquer l'animation centrée
         const textLength = fullText.length;
-        const baseSpeed = 5 - currentSpeed;
-        const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 20));
+        const baseSpeed = 10 - currentSpeed;
+        const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 10));
         
         // Utiliser une animation différente pour le mode plein écran
         fsText.style.animation = `scroll-center ${duration}s linear infinite`;
@@ -574,7 +574,7 @@
         
         const exitBtn = document.createElement('button');
         exitBtn.className = 'fullscreen-btn';
-        exitBtn.textContent = '×';
+        exitBtn.textContent = 'EXIT';
         exitBtn.addEventListener('click', function() {
           toggleFullscreen(false);
           if (isPlaying) {
