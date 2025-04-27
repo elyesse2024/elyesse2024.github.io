@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Démoller de texte LED</title>
+  <title>Défileur de texte LED</title>
   <style>
     :root {
       --primary-color: #00a19a;
@@ -251,11 +251,9 @@
       width: 100%;
       line-height: 1; /* Réduire l'espace entre les lignes */
       position: absolute;
-      /*
-       * Nous allons garder l'animation, mais nous allons centrer
-       * le contenu au milieu de l'écran pour commencer
-       * puis l'animer depuis la droite vers la gauche
-       */
+      animation: scroll-center 15s linear infinite;
+      will-change: transform;
+      text-shadow: 0 0 5px rgba(0,0,0,0.3);
     }
     
     @keyframes scroll-center {
@@ -314,14 +312,14 @@
 </head>
 <body>
   <div class="header">
-    Démoller de texte LED
+    Défileur de texte LED
     <button class="text-size-btn" id="textSizeBtn">AA</button>
   </div>
   
   <div class="content">
     <div class="section-title">Aperçu:</div>
     <div id="previewContainer">
-      <div class="preview-text" id="previewText">are beautiful</div>
+      <div class="preview-text" id="previewText">You are beautiful</div>
       <div class="led-pixels"></div>
       <div class="led-grid"></div>
     </div>
@@ -392,30 +390,25 @@
     let isFullscreen = false;
     let textSize = 'normal'; // normal, large, xlarge
     
-    // Mise à jour du texte
-    textInput.addEventListener('input', function() {
-      updatePreviewText();
-    });
-    
-    function updatePreviewText() {
+    // Mise à jour du texte complet pour l'animation
+    function updateFullPreviewText() {
       let text = textInput.value;
       
       if (isUpperCase) {
         text = text.toUpperCase();
       }
       
-      // Extraction d'une partie visible pour l'aperçu
-      let visibleText = text;
-      if (text.length > 15) {
-        visibleText = text.substring(0, 150);
-      }
+      // Pour l'animation, utiliser le texte complet
+      previewText.textContent = text;
       
-      previewText.textContent = visibleText;
       updateScrollSpeed();
-      
-      // Ajuster la taille du texte pour remplir la zone
       adjustTextSize();
     }
+    
+    // Mise à jour du texte
+    textInput.addEventListener('input', function() {
+      updateFullPreviewText();
+    });
     
     // Ajuster la taille du texte pour qu'il remplisse mieux la zone
     function adjustTextSize() {
@@ -486,7 +479,7 @@
     function updateScrollSpeed() {
       const textLength = textInput.value.length;
       const baseSpeed = 20 - currentSpeed; // Inverser l'échelle (1=rapide, 10=lent)
-      const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 50));
+      const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 20));
       
       previewText.style.animation = 'none';
       void previewText.offsetWidth; // Force reflow
@@ -521,7 +514,7 @@
         capsBtn.classList.remove('active');
       }
       
-      updatePreviewText();
+      updateFullPreviewText();
     });
     
     // Gestion du bouton plein écran séparé
@@ -546,17 +539,18 @@
         const fsText = document.createElement('div');
         fsText.className = 'preview-text';
         
-        // Utiliser le texte complet, pas seulement l'aperçu
+        // Utiliser le texte complet depuis l'input
+        let fullText = textInput.value;
         if (isUpperCase) {
-          fsText.textContent = textInput.value.toUpperCase();
-        } else {
-          fsText.textContent = textInput.value;
+          fullText = fullText.toUpperCase();
         }
         
-        // Appliquer l'animation centré
-        const textLength = textInput.value.length;
+        fsText.textContent = fullText;
+        
+        // Appliquer l'animation centrée
+        const textLength = fullText.length;
         const baseSpeed = 20 - currentSpeed;
-        const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 50));
+        const duration = Math.max(baseSpeed, baseSpeed * (1 + textLength / 20));
         
         // Utiliser une animation différente pour le mode plein écran
         fsText.style.animation = `scroll-center ${duration}s linear infinite`;
@@ -677,31 +671,6 @@
     
     // Écouter les changements de taille de la fenêtre
     window.addEventListener('resize', function() {
-      if (textSize === 'normal') {
-        adjustTextSize();
-      }
-      updateScrollSpeed();
-    });
-    
-    // Initialisation
-    window.addEventListener('load', function() {
-      // Mise à jour initiale du texte de prévisualisation
-      updatePreviewText();
-      
-      // Ajuster la taille du texte pour remplir la zone
-      adjustTextSize();
-      
-      // Afficher seulement une petite partie du texte dans l'aperçu
-      const text = textInput.value;
-      let visibleText = text;
-      if (text.length > 15) {
-        visibleText = text.substring(0, 15);
-      }
-      previewText.textContent = visibleText;
-    });
-    
-    // S'assurer que le texte est toujours correctement dimensionné
-    window.addEventListener('resize', function() {
       if (!isFullscreen) {
         if (textSize === 'normal') {
           adjustTextSize();
@@ -710,8 +679,17 @@
       }
     });
     
+    // Initialisation
+    window.addEventListener('load', function() {
+      // Mise à jour initiale du texte complet
+      updateFullPreviewText();
+      
+      // Ajuster la taille du texte pour remplir la zone
+      adjustTextSize();
+    });
+    
     // Faire la première initialisation immédiatement
-    updatePreviewText();
+    updateFullPreviewText();
     adjustTextSize();
   </script>
 </body>
